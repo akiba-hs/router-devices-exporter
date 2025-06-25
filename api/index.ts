@@ -21,7 +21,7 @@ const deviceConnDuration = new Gauge({
 
 async function collectMetrics() {
     register.resetMetrics();
-    axiosRetry(axios, { retries: 15 });
+    axiosRetry(axios, { retries: 15, retryDelay: axiosRetry.linearDelay() });
     const { data: xml } = await axios.get<string>(ROUTER_URL, { auth: { username: ROUTER_USER, password: ROUTER_PASS } });
     const result = await parseStringPromise(xml, { explicitArray: false });
     const devices = Array.isArray(result.deviceList.device)
